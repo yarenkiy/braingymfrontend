@@ -1,0 +1,146 @@
+.language-selector-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.6s ease;
+  }
+  
+  .language-selector-card {
+    background: rgba(255,255,255,0.98);
+    backdrop-filter: blur(20px);
+    padding: 60px 50px;
+    border-radius: 30px;
+    box-shadow: 0 25px 70px rgba(0,0,0,0.3);
+    text-align: center;
+    max-width: 600px;
+    border: 2px solid rgba(255,255,255,0.5);
+    animation: slideIn 0.6s ease;
+  }
+  
+  .language-title {
+    font-size: 6rem;
+    margin-bottom: 30px;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+    animation: pulse 2s ease infinite;
+  }
+  
+  .language-question {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  
+  .language-question-en {
+    font-size: 1.5rem;
+    color: #666;
+    font-weight: 500;
+    display: block;
+    margin-top: 10px;
+  }
+  
+  .language-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin-top: 50px;
+  }
+  
+  .language-option {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 3px solid transparent;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .language-option::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  
+  .language-option:hover::before {
+    opacity: 1;
+  }
+  
+  .language-option:hover {
+    transform: translateY(-15px) scale(1.05);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  }
+  
+  .language-option.turkish:hover {
+    border-color: #e74c3c;
+  }
+  
+  .language-option.english:hover {
+    border-color: #3498db;
+  }
+  
+  .language-flag {
+    font-size: 5rem;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+    transition: transform 0.4s;
+  }
+  
+  .language-option:hover .language-flag {
+    transform: scale(1.2) rotate(5deg);
+  }
+  
+  .language-name {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 800;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .language-native {
+    font-size: 1.2rem;
+    color: #666;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+  }
+  
+  @media (max-width: 768px) {
+    .language-selector-card {
+      padding: 40px 30px;
+    }
+    
+    .language-title {
+      font-size: 4rem;
+    }
+    
+    .language-question {
+      font-size: 1.4rem;
+    }
+    
+    .language-question-en {
+      font-size: 1.2rem;
+    }
+    
+    .language-options {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    
+    .language-option {
+      padding: 30px 20px;
+    }
+  }
