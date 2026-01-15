@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { wordAPI } from '../services/api';
 import { useLanguage } from '../contexts/LanguageContext';
 import './WordGame.css';
+
+
 
 const WordGame = ({ onBack }) => {
   const { t, language } = useLanguage();
@@ -17,7 +19,8 @@ const WordGame = ({ onBack }) => {
 
   useEffect(() => {
     loadChallenges();
-  }, [language]);
+  }, [loadChallenges]);
+  
 
   useEffect(() => {
     if (challenges.length > 0 && currentChallenge < challenges.length) {
@@ -30,8 +33,7 @@ const WordGame = ({ onBack }) => {
       setSelectedLetters([]);
     }
   }, [challenges, currentChallenge]);
-
-  const loadChallenges = async () => {
+  const loadChallenges = useCallback(async () => {
     try {
       const response = await wordAPI.getWordChallenges(language);
       setChallenges(response.data);
@@ -42,8 +44,8 @@ const WordGame = ({ onBack }) => {
     } catch (error) {
       console.error('Kelimeler yüklenemedi:', error);
     }
-  };
-
+  }, [language]);
+  
   const handleLetterClick = (letter) => {
     if (showResult || letter.isUsed) return;
     
