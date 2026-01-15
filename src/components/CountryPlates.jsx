@@ -13,10 +13,6 @@ const CountryPlates = ({ onBack }) => {
   const [gameFinished, setGameFinished] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadQuestions();
-  }, [loadQuestions]);
-  
 
   const loadQuestions = useCallback(async () => {
     try {
@@ -34,6 +30,10 @@ const CountryPlates = ({ onBack }) => {
       setLoading(false);
     }
   }, [language]);
+  
+  useEffect(() => {
+    loadQuestions();
+  }, [loadQuestions]);
   
 
   const handleAnswer = (answer) => {

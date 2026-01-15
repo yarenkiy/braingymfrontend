@@ -17,10 +17,6 @@ const WordGame = ({ onBack }) => {
   const [gameFinished, setGameFinished] = useState(false);
   const [draggedLetter, setDraggedLetter] = useState(null);
 
-  useEffect(() => {
-    loadChallenges();
-  }, [loadChallenges]);
-  
 
   useEffect(() => {
     if (challenges.length > 0 && currentChallenge < challenges.length) {
@@ -33,6 +29,12 @@ const WordGame = ({ onBack }) => {
       setSelectedLetters([]);
     }
   }, [challenges, currentChallenge]);
+
+  
+  useEffect(() => {
+    loadChallenges();
+  }, [loadChallenges]);
+  
   const loadChallenges = useCallback(async () => {
     try {
       const response = await wordAPI.getWordChallenges(language);

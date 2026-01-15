@@ -11,10 +11,7 @@ const CountryCapitals = ({ onBack }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showResult, setShowResult] = useState(false);
   const [gameFinished, setGameFinished] = useState(false);
-  useEffect(() => {
-    loadQuestions();
-  }, [loadQuestions]);
-  
+
   const loadQuestions = useCallback(async () => {
     try {
       const response = await countryAPI.getCapitalQuestions(language);
@@ -28,7 +25,10 @@ const CountryCapitals = ({ onBack }) => {
     }
   }, [language]);
   
-
+  useEffect(() => {
+    loadQuestions();
+  }, [loadQuestions]);
+  
   const handleAnswer = (answer) => {
     if (showResult) return;
     

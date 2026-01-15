@@ -12,9 +12,7 @@ const CountryCities = ({ onBack }) => {
   const [showResult, setShowResult] = useState(false);
   const [gameFinished, setGameFinished] = useState(false);
 
-  useEffect(() => {
-    loadQuestions();
-  }, [loadQuestions]);
+
   
 
   const loadQuestions = useCallback(async () => {
@@ -30,7 +28,9 @@ const CountryCities = ({ onBack }) => {
     }
   }, [language]);
   
-
+  useEffect(() => {
+    loadQuestions();
+  }, [loadQuestions]);
   const handleAnswer = (answer) => {
     if (showResult) return;
     
