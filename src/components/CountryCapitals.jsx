@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { countryAPI } from '../services/api';
 import { useLanguage } from '../contexts/LanguageContext';
 import './CountryGame.css';
@@ -11,12 +11,11 @@ const CountryCapitals = ({ onBack }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showResult, setShowResult] = useState(false);
   const [gameFinished, setGameFinished] = useState(false);
-
   useEffect(() => {
     loadQuestions();
-  }, [language]);
-
-  const loadQuestions = async () => {
+  }, [loadQuestions]);
+  
+  const loadQuestions = useCallback(async () => {
     try {
       const response = await countryAPI.getCapitalQuestions(language);
       setQuestions(response.data);
@@ -27,7 +26,8 @@ const CountryCapitals = ({ onBack }) => {
     } catch (error) {
       console.error('Sorular yüklenemedi:', error);
     }
-  };
+  }, [language]);
+  
 
   const handleAnswer = (answer) => {
     if (showResult) return;

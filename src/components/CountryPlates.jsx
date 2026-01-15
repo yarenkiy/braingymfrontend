@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { countryAPI } from '../services/api';
 import { useLanguage } from '../contexts/LanguageContext';
 import './CountryGame.css';
@@ -15,9 +15,10 @@ const CountryPlates = ({ onBack }) => {
 
   useEffect(() => {
     loadQuestions();
-  }, [language]);
+  }, [loadQuestions]);
+  
 
-  const loadQuestions = async () => {
+  const loadQuestions = useCallback(async () => {
     try {
       setLoading(true);
       const response = await countryAPI.getPlateQuestions(language);
@@ -32,7 +33,8 @@ const CountryPlates = ({ onBack }) => {
       console.error('Sorular yüklenemedi:', error);
       setLoading(false);
     }
-  };
+  }, [language]);
+  
 
   const handleAnswer = (answer) => {
     if (showResult) return;
