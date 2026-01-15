@@ -4,7 +4,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import './CountryGame.css';
 
 const CountryCapitals = ({ onBack }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
@@ -14,12 +14,16 @@ const CountryCapitals = ({ onBack }) => {
 
   useEffect(() => {
     loadQuestions();
-  }, []);
+  }, [language]);
 
   const loadQuestions = async () => {
     try {
-      const response = await countryAPI.getCapitalQuestions();
+      const response = await countryAPI.getCapitalQuestions(language);
       setQuestions(response.data);
+      setCurrentQuestion(0);
+      setScore(0);
+      setShowResult(false);
+      setGameFinished(false);
     } catch (error) {
       console.error('Sorular yüklenemedi:', error);
     }
@@ -61,9 +65,8 @@ const CountryCapitals = ({ onBack }) => {
 
   if (gameFinished) {
     return (
-        
       <div className="country-game-container">
-        
+        <button className="back-button" onClick={onBack}>← {t('backToMenu')}</button>
         <div className="game-result">
           <h2>{t('gameOver')}</h2>
           <p className="final-score">{t('score')}: {score} / {questions.length}</p>
@@ -81,7 +84,7 @@ const CountryCapitals = ({ onBack }) => {
 
   return (
     <div className="country-game-container">
-      <button className="back-button" onClick={onBack}>{t('backToMenu')}</button>
+      <button className="back-button" onClick={onBack}>← {t('backToMenu')}</button>
       
       <div className="game-header">
         <h2>🏛️ {t('capitals')}</h2>
@@ -91,7 +94,12 @@ const CountryCapitals = ({ onBack }) => {
       </div>
 
       <div className="question-container">
-        <p className="question-text">{question.question}</p>
+        <p className="question-text">
+          {language === 'tr' 
+            ? `${question.question} ${t('whichCapital')}` 
+            : `${t('whichCapital')} ${question.question}?`
+          }
+        </p>
         
         <div className="options-grid">
           {question.options.map((option, index) => (

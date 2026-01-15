@@ -15,14 +15,14 @@ export const sudokuAPI = {
 };
 
 export const countryAPI = {
-  getPlateQuestions: () => api.get('/country/plates'),
-  getCapitalQuestions: () => api.get('/country/capitals'),
-  getCityQuestions: () => api.get('/country/cities'),
+  getPlateQuestions: (lang = 'tr') => api.get(`/country/plates?lang=${lang}`),
+  getCapitalQuestions: (lang = 'tr') => api.get(`/country/capitals?lang=${lang}`),
+  getCityQuestions: (lang = 'tr') => api.get(`/country/cities?lang=${lang}`),
 };
 
 export const wordAPI = {
-  getWordChallenges: () => api.get('/word/challenge'),
-  validateWord: (word) => api.post('/word/validate', word),
+  getWordChallenges: (lang = 'tr') => api.get(`/word/challenge?lang=${lang}`),
+  validateWord: (word, lang = 'tr') => api.post(`/word/validate?lang=${lang}`, word),
 };
 
 export default api;

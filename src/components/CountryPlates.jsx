@@ -4,7 +4,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import './CountryGame.css';
 
 const CountryPlates = ({ onBack }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
@@ -15,14 +15,18 @@ const CountryPlates = ({ onBack }) => {
 
   useEffect(() => {
     loadQuestions();
-  }, []);
+  }, [language]);
 
   const loadQuestions = async () => {
     try {
       setLoading(true);
-      const response = await countryAPI.getPlateQuestions();
+      const response = await countryAPI.getPlateQuestions(language);
       console.log('Plaka soruları yüklendi:', response.data);
       setQuestions(response.data);
+      setCurrentQuestion(0);
+      setScore(0);
+      setShowResult(false);
+      setGameFinished(false);
       setLoading(false);
     } catch (error) {
       console.error('Sorular yüklenemedi:', error);
@@ -63,7 +67,7 @@ const CountryPlates = ({ onBack }) => {
   if (loading) {
     return (
       <div className="country-game-container">
-        <button className="back-button" onClick={onBack}>{t('backToMenu')}</button>
+        <button className="back-button" onClick={onBack}>← {t('backToMenu')}</button>
         <div className="loading">{t('loading')}</div>
       </div>
     );
@@ -72,7 +76,7 @@ const CountryPlates = ({ onBack }) => {
   if (questions.length === 0) {
     return (
       <div className="country-game-container">
-        <button className="back-button" onClick={onBack}>{t('backToMenu')}</button>
+        <button className="back-button" onClick={onBack}>← {t('backToMenu')}</button>
         <div className="loading">{t('loading')}</div>
         <button onClick={loadQuestions} className="restart-btn">{t('restart')}</button>
       </div>
@@ -82,7 +86,7 @@ const CountryPlates = ({ onBack }) => {
   if (gameFinished) {
     return (
       <div className="country-game-container">
-        <button className="back-button" onClick={onBack}>{t('backToMenu')}</button>
+        <button className="back-button" onClick={onBack}>← {t('backToMenu')}</button>
         <div className="game-result">
           <h2>{t('gameOver')}</h2>
           <p className="final-score">{t('score')}: {score} / {questions.length}</p>
@@ -100,7 +104,7 @@ const CountryPlates = ({ onBack }) => {
 
   return (
     <div className="country-game-container">
-      <button className="back-button" onClick={onBack}>{t('backToMenu')}</button>
+      <button className="back-button" onClick={onBack}>← {t('backToMenu')}</button>
       
       <div className="game-header">
         <h2>🚗 {t('plates')}</h2>

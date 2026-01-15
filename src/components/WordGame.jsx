@@ -4,7 +4,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import './WordGame.css';
 
 const WordGame = ({ onBack }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [challenges, setChallenges] = useState([]);
   const [currentChallenge, setCurrentChallenge] = useState(0);
   const [availableLetters, setAvailableLetters] = useState([]);
@@ -17,7 +17,7 @@ const WordGame = ({ onBack }) => {
 
   useEffect(() => {
     loadChallenges();
-  }, []);
+  }, [language]);
 
   useEffect(() => {
     if (challenges.length > 0 && currentChallenge < challenges.length) {
@@ -33,8 +33,12 @@ const WordGame = ({ onBack }) => {
 
   const loadChallenges = async () => {
     try {
-      const response = await wordAPI.getWordChallenges();
+      const response = await wordAPI.getWordChallenges(language);
       setChallenges(response.data);
+      setCurrentChallenge(0);
+      setScore(0);
+      setShowResult(false);
+      setGameFinished(false);
     } catch (error) {
       console.error('Kelimeler yüklenemedi:', error);
     }
@@ -116,7 +120,7 @@ const WordGame = ({ onBack }) => {
   if (gameFinished) {
     return (
       <div className="word-game-container">
-        <button className="back-button" onClick={onBack}>{t('backToMenu')}</button>
+        <button className="back-button" onClick={onBack}>← {t('backToMenu')}</button>
         <div className="game-result">
           <h2>{t('gameOver')}</h2>
           <p className="final-score">{t('score')}: {score} / {challenges.length}</p>
@@ -134,7 +138,7 @@ const WordGame = ({ onBack }) => {
 
   return (
     <div className="word-game-container">
-      <button className="back-button" onClick={onBack}>{t('backToMenu')}</button>
+      <button className="back-button" onClick={onBack}>← {t('backToMenu')}</button>
       
       <div className="game-header">
         <h2>📝 {t('words')}</h2>
