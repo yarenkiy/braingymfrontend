@@ -31,9 +31,7 @@ const WordGame = ({ onBack }) => {
   }, [challenges, currentChallenge]);
 
   
-  useEffect(() => {
-    loadChallenges();
-  }, [loadChallenges]);
+
   
   const loadChallenges = useCallback(async () => {
     try {
@@ -47,6 +45,9 @@ const WordGame = ({ onBack }) => {
       console.error('Kelimeler yüklenemedi:', error);
     }
   }, [language]);
+  useEffect(() => {
+    loadChallenges();
+  }, [loadChallenges]);
   
   const handleLetterClick = (letter) => {
     if (showResult || letter.isUsed) return;
