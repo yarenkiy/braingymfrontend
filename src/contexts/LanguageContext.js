@@ -32,6 +32,7 @@ export const LanguageProvider = ({ children }) => {
       const response = await axios.get(
         `${API_BASE_URL}/api/language/translations/${lang}`
       );
+      
       setTranslations(response.data);
     } catch (error) {
       console.error('Çeviriler yüklenemedi:', error);
