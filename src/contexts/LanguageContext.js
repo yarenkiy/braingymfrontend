@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+
 const LanguageContext = createContext();
 
 export const useLanguage = () => {
@@ -25,29 +27,23 @@ export const LanguageProvider = ({ children }) => {
   const loadTranslations = async (lang) => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:8080/api/language/translations/${lang}`);
+      const response = await axios.get(
+        `${API_BASE_URL}/api/language/translations/${lang}`
+      );
       setTranslations(response.data);
-      setLoading(false);
     } catch (error) {
       console.error('Çeviriler yüklenemedi:', error);
+    } finally {
       setLoading(false);
     }
   };
 
-  const t = (key) => {
-    return translations[key] || key;
-  };
-
-  const value = {
-    language,
-    setLanguage,
-    translations,
-    t,
-    loading
-  };
+  const t = (key) => translations[key] || key;
 
   return (
-    <LanguageContext.Provider value={value}>
+    <LanguageContext.Provider
+      value={{ language, setLanguage, translations, t, loading }}
+    >
       {children}
     </LanguageContext.Provider>
   );
