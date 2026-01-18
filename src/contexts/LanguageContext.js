@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 const LanguageContext = createContext();
@@ -21,16 +21,9 @@ export const LanguageProvider = ({ children }) => {
     ? `${process.env.REACT_APP_API_URL}/api`
     : 'http://localhost:8080/api';
 
-  useEffect(() => {
-    if (language) {
-      loadTranslations(language);
-    }
-  }, [language]);
-
-  const loadTranslations = async (lang) => {
+  const loadTranslations = useCallback(async (lang) => {
     try {
       setLoading(true);
-      // Artık /api prefix'i yok çünkü API_BASE_URL'de zaten var
       const response = await axios.get(`${API_BASE_URL}/language/translations/${lang}`);
       setTranslations(response.data);
       setLoading(false);
@@ -38,7 +31,13 @@ export const LanguageProvider = ({ children }) => {
       console.error('Çeviriler yüklenemedi:', error);
       setLoading(false);
     }
-  };
+  }, [API_BASE_URL]);
+
+  useEffect(() => {
+    if (language) {
+      loadTranslations(language);
+    }
+  }, [language, loadTranslations]);
 
   const t = (key) => {
     return translations[key] || key;
